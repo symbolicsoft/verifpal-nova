@@ -7,6 +7,8 @@
     "categories": ["languages"],
     "homepage": "https://verifpal.com",
     "keywords": ["verifpal"],
-    "license": "MIT",
-    "activationEvents": ["onLanguage:Verifpal", "onWorkspaceContains:*.vp"]
+    "license": "GPLv3",
+    "activationEvents": ["onLanguage:Verifpal", "onWorkspaceContains:*.vp"],
+    "repository": "https://source.symbolic.software/verifpal/verifpal-nova",
+    "bugs": "https://verifpal.com/list"
 }
