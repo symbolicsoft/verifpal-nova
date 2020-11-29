@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<syntax name="verifpal">
+<meta>
+    <name>Verifpal</name>
+    <type>script</type>
+    <preferred-file-extension>vp</preferred-file-extension>
+    <default-extension>vp</default-extension>
+</meta>
+
+<detectors>
+    <extension priority="1.0">vp</extension>
+</detectors>
+
+<indentation>
+    <increase>
+        <expression>(\{[^}\"']*$)|(\[[^\]\"']*$)|(\([^)\"']*$)</expression>
+    </increase>
+    <decrease>
+        <expression>^\s*(\s*/\*.*\*/\s*)*[\}\]\)\\]</expression>
+    </decrease>
+</indentation>
+
+<comments>
+    <single>
+        <expression>//</expression>
+    </single>
+</comments>
+
+<brackets>
+    <pair open="[" close="]" />
+    <pair open="(" close=")" />
+</brackets>
+
+<autoclosing-pairs>
+    <pair open="[" close="]" skip="string,comment" />
+    <pair open="(" close=")" skip="string,comment" />
+</autoclosing-pairs>
+
+<surrounding-pairs>
+    <pair open="[" close="]" />
+    <pair open="(" close=")" />
+</surrounding-pairs>
+
+
+<scopes>
+    <include syntax="self" collection="comments" />
+    <include syntax="self" collection="blocks" />
+    <include syntax="self" collection="function-blocks" />
+    <include syntax="self" collection="keywords" />
+    <include syntax="self" collection="values" />
+    <include syntax="self" collection="identifiers" />
+    <include syntax="self" collection="syntax" />
+</scopes>
+
+<collections>
+
+    <!-- Comments -->
+    <collection name="comments">
+        <scope name="verifpal.comment.single.documentation">
+            <expression>(\/\/[!\/])(.*)$[\n\r]*</expression>
+            <capture number="1" name="verifpal.punctuation.definition.begin"/>
+            <capture number="2" name="verifpal.comment.content" />
+        </scope>
+        <scope name="verifpal.comment.single" spell-check="true">
+            <expression>(\/\/)(.*)$</expression>
+            <capture number="1" name="verifpal.punctuation.definition.begin" />
+            <capture number="2" name="verifpal.comment.content" />
+        </scope>
+    </collection>
+    
+    <!-- Blocks -->
+    <collection name="blocks">
+        <scope name="verifpal.block">
+            <symbol type="block">
+                <context behavior="subtree" />
+            </symbol>
+            <starts-with>
+                <expression>\[</expression>
+                <capture number="0" name="verifpal.block.bracket" />
+            </starts-with>
+            <ends-with>
+                <expression>\]</expression>
+                <capture number="0" name="verifpal.block.bracket" />
+            </ends-with>
+            <subscopes>
+                <include syntax="self" />
+            </subscopes>
+        </scope>
+    </collection>
+
+    <!-- Function Blocks -->
+    <collection name="function-blocks">
+        <scope name="verifpal.block">
+            <symbol type="block">
+                <context behavior="subtree" fold-type="function" />
+            </symbol>
+            <starts-with>
+                <expression>\[</expression>
+                <capture number="0" name="verifpal.bracket" />
+            </starts-with>
+            <ends-with>
+                <expression>\]</expression>
+                <capture number="0" name="verifpal.bracket" />
+            </ends-with>
+            <subscopes>
+                <include syntax="self" />
+            </subscopes>
+        </scope>
+    </collection>
+
+    <!-- Keywords -->
+    <collection name="keywords">
+        <scope name="verifpal.keyword">
+            <symbol type="keyword" />
+            <strings>
+                <string>knows</string>
+                <string>generates</string>
+                <string>leaks</string>
+                <string>principal</string>
+                <string>phase</string>
+                <string>query</string>
+                <string>attacker</string>
+                <string>confidentiality</string>
+                <string>authentication</string>
+                <string>freshness</string>
+                <string>unlinkability</string>
+                <string>precondition</string>
+                <string>private</string>
+                <string>public</string>
+            </strings>
+        </scope>
+        
+    </collection>
+
+    <!-- Values -->
+    <collection name="values">
+        <include syntax="self" collection="strings" />
+        <scope name="verifpal.value.number">
+            <expression>\b\-?(?:\d+(?:\.\d*)?|(?:\.\d+))\b</expression>
+        </scope>
+    </collection>
+    
+    <!-- Identifiers -->
+    <collection name="identifiers">
+        <!-- Package -->
+        <scope name="verifpal.identifier.global.package">
+            <expression>\b(package)\s+([a-zA-ZÀ-ÖØ-öø-ÿ_][A-Za-zÀ-ÖØ-öø-ÿ0-9_]*)</expression>
+                        <capture number="1" name="verifpal.string-template.package" />
+                        <capture number="2" name="verifpal.identifier" />
+        </scope>
+        <!-- Import -->
+        <scope name="verifpal.string-template.import">
+            <expression>import</expression>
+        </scope>
+        <scope name="verifpal.identifier.core.function">
+            <strings prefix="(?&lt;!\.)" suffix="(?=\()">
+                <string>UNBLIND</string>
+                <string>BLIND</string>
+                <string>RINGSIGNVERIF</string>
+                <string>RINGSIGN</string>
+                <string>PW_HASH</string>
+                <string>HASH</string>
+                <string>HKDF</string>
+                <string>AEAD_ENC</string>
+                <string>AEAD_DEC</string>
+                <string>ENC</string>
+                <string>DEC</string>
+                <string>ASSERT</string>
+                <string>CONCAT</string>
+                <string>SPLIT</string>
+                <string>MAC</string>
+                <string>SIGNVERIF</string>
+                <string>SIGN</string>
+                <string>PKE_ENC</string>
+                <string>PKE_DEC</string>
+                <string>SHAMIR_SPLIT</string>
+                <string>SHAMIR_JOIN</string>
+                <string>G</string>
+                <string>nil</string>
+            </strings>
+        </scope>
+        <scope name="verifpal.identifier.blank">
+            <strings>
+                <string>_</string>
+            </strings>
+        </scope>
+    </collection>
+
+    <!-- Syntax -->
+    <collection name="syntax">
+        <scope name="verifpal.bracket.block.start">
+            <symbol type="block">
+                <context behavior="start" />
+            </symbol>
+            <expression>\[</expression>
+        </scope>
+        <scope name="verifpal.bracket.block.end">
+            <symbol type="block">
+                <context behavior="end" />
+            </symbol>
+            <expression>\]</expression>
+        </scope>
+        <scope name="verifpal.bracket">
+            <expression>[\(\[\)\]]</expression>
+        </scope>
+        <scope name="verifpal.operator">
+            <expression>(\,)|(->)|(\?)|(\^)|(\=)</expression>
+        </scope>
+    </collection>
+</collections>
+</syntax>

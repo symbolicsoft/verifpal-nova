@@ -1,0 +1,12 @@
+{
+    "identifier": "symbolicsoft.verifpal",
+    "name": "Verifpal",
+    "organization": "Symbolic Software",
+    "description": "Verifpal language support and syntax highlighting for Nova.",
+    "version": "1.0",
+    "categories": ["languages"],
+    "homepage": "https://verifpal.com",
+    "keywords": ["verifpal"],
+    "license": "MIT",
+    "activationEvents": ["onLanguage:Verifpal", "onWorkspaceContains:*.vp"]
+}
