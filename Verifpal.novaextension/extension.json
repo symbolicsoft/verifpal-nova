@@ -9,6 +9,6 @@
     "keywords": ["verifpal"],
     "license": "GPLv3",
     "activationEvents": ["onLanguage:Verifpal", "onWorkspaceContains:*.vp"],
-    "repository": "https://source.symbolic.software/verifpal/verifpal-nova",
+    "repository": "https://github.com/symbolicsoft/verifpal-nova",
     "bugs": "https://verifpal.com/list"
 }
